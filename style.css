@@ -1,0 +1,25 @@
+body
+{
+	background-color: black;
+}
+
+header
+{
+	color: white;
+	text-align: center;
+	font-size: 36px;
+}
+#mapa
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 1200px;
+	height: 800px;
+	background-image: url("img/mapa.png");
+}
+#gracz
+{
+	width: 150px;
+	height: 150px;
+	#background-image: url("img/gracz.png");
+}
