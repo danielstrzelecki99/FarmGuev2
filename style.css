@@ -17,9 +17,7 @@ header
 	height: 800px;
 	background-image: url("img/mapa.png");
 }
-#gracz
+canvas
 {
-	width: 150px;
-	height: 150px;
-	#background-image: url("img/gracz.png");
+	/*background-color: aqua;*/
 }
