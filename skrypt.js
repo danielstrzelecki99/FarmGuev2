@@ -1,8 +1,10 @@
+const can = document.getElementById("can");
+const ctx = can.getContext("2d");
+const cw = can.width = 1200;
+const ch = can.height = 800;
+
 function printmap(){
-	const can = document.getElementById("can");
-	const ctx = can.getContext("2d");
-	can.width = 1200;
-	can.height = 800;
+	
 	let minion = new Image();
 	minion.src="img/minion.png";
 	minion.onload = function(){
@@ -10,8 +12,9 @@ function printmap(){
 	}
 }
 
-
 class Minion{
+	let positionX;
+	let positionY;
 	constructor(){
 		let hp = 1;
 	}
