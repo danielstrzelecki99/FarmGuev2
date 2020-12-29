@@ -10,14 +10,23 @@ function printmap(){
 	ctx.drawImage(this,80,70,70,70);
 	}
 }
-
-function printPlayer(){
-	let playergraph = new Image();
-	playergraph.src="img/gracz.png";
-	playergraph.onload = function(){
-	ctx.drawImage(this,200,200,165,175);
+const player = {
+	posX: cw/2,
+	posY: ch/2,
+	printPlayer: function () {
+		let playergraph = new Image();
+		playergraph.src="img/gracz.png";
+		playergraph.onload = function(){
+		ctx.drawImage(this,200,200,165,175);
+		}
 	}
 }
 
 printmap();
-printPlayer();
+player.printPlayer();
+
+function gra(){
+	printmap();
+	player.printPlayer();
+	player.move();
+}
