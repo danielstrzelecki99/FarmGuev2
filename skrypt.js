@@ -11,34 +11,31 @@ let d = false;
 let s = false;
 let w = false;
 
+let playergraph = new Image();
+playergraph.src="img/gracz.png";
 
-function printmap(){
+/*function printmap(){
 	let minion = new Image();
 	minion.src="img/minion.png";
 	minion.onload = function(){
 	ctx.drawImage(this,80,70,70,70);
-<<<<<<< HEAD
+	}
+}*/
+
+function printmap(){
+	const map = new Image();
+	map.src="img/mapa.png";
+	map.onload = function(){
+	ctx.drawImage(this,0,0);
 	}
 }
+
 const player = {
-	posX: cw/2,
-	posY: ch/2,
+	
 	printPlayer: function () {
-		let playergraph = new Image();
-		playergraph.src="img/gracz.png";
-		playergraph.onload = function(){
-		ctx.drawImage(this,200,200,165,175);
-		}
-=======
-	}
-}
-const player = {
-	printPlayer: function () {
-		let playergraph = new Image();
-		playergraph.src="img/gracz.png";
+		
 		playergraph.onload = function(){
 		ctx.drawImage(this,playerPosX,playerPosY,165,175);
-		ctx.clearImage(this,playerPosX,playerPosY,165,175);
 		}
 	}
 }
@@ -46,7 +43,6 @@ const player = {
 function obslugaklawiszy(e){
 	if (e.keyCode == 87) {
 		w = true;
->>>>>>> 1da0e90eed830d27a8f6d556ab12199195982ec0
 	}
 	if (e.keyCode == 83) {
 		s = true;
@@ -59,10 +55,6 @@ function obslugaklawiszy(e){
     }
 }
 
-<<<<<<< HEAD
-printmap();
-player.printPlayer();
-=======
 function obslugaklawiszystop(e){
 	if (e.keyCode == 87) {
 		w = false;
@@ -92,21 +84,15 @@ function playerMove(){
 		playerPosX +=4;
 	}
 }
->>>>>>> 1da0e90eed830d27a8f6d556ab12199195982ec0
+
 
 function gra(){
 	printmap();
 	player.printPlayer();
-<<<<<<< HEAD
-	player.move();
-}
-=======
 	playerMove();
-	clear();
 }
 
 setInterval(gra, 1000/60);
 
 document.addEventListener("keydown", obslugaklawiszy);
 document.addEventListener("keyup", obslugaklawiszystop);
->>>>>>> 1da0e90eed830d27a8f6d556ab12199195982ec0
