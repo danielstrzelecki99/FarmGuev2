@@ -3,16 +3,11 @@ const ctx = can.getContext("2d");
 const cw = can.width = 1200;
 const ch = can.height = 800;
 
-let playerPosX = cw/2;
-let playerPosY = ch/2;
-
 let a = false;
 let d = false;
 let s = false;
 let w = false;
 
-let playergraph = new Image();
-playergraph.src="img/gracz.png";
 
 /*function printmap(){
 	let minion = new Image();
@@ -31,12 +26,18 @@ function printmap(){
 }
 
 const player = {
-	
+	posX: cw/2,
+	posY: ch/2,
 	printPlayer: function () {
-		
+		const playergraph = new Image();
+		playergraph.src="img/gracz.png";
+		const a = this.posX;
+		const b = this.posY;
 		playergraph.onload = function(){
-		ctx.drawImage(this,playerPosX,playerPosY,165,175);
+		ctx.drawImage(this,a,b,165,175);
 		}
+		console.log(a);
+		console.log(b);
 	}
 }
 
@@ -63,7 +64,7 @@ function obslugaklawiszystop(e){
 		s = false;
 	}
 	if (e.keyCode == 65) {
-	a = false;
+		a = false;
 	}
 	if (e.keyCode == 68) {
         d = false;
@@ -72,16 +73,16 @@ function obslugaklawiszystop(e){
 
 function playerMove(){
 	if (w == true) {
-		playerPosY-=4;
+		player.posY-=4;
 	}
 	if (s == true) {
-		playerPosY+=4;
+		player.posY+=4;
 	}
 	if (a == true){
-		playerPosX -=4;
+		player.posX -=4;
 	}
 	if (d==true){
-		playerPosX +=4;
+		player.posX +=4;
 	}
 }
 
