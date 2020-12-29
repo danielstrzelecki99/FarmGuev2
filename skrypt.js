@@ -10,6 +10,7 @@ function printmap(){
 	}
 }
 
+
 class Minion{
 	constructor(){
 		let hp = 1;
