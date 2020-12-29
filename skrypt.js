@@ -19,5 +19,5 @@ function table(){
 	}
 	minion.src="img/minion.png";
 }
-
 table();
+//komentarz testowy
