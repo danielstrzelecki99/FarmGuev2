@@ -13,8 +13,7 @@ function printmap(){
 }
 
 class Minion{
-	let positionX;
-	let positionY;
+	
 	constructor(){
 		let hp = 1;
 	}
