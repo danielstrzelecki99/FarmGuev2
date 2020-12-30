@@ -56,7 +56,7 @@ function minionSpawn(){
 	const min = new Minion();
 	minionsArray.push(min);
 }
-setInterval(minionSpawn, 2000);
+setInterval(minionSpawn, 1500);
 
 let bulletsArray = [];
 
@@ -74,8 +74,9 @@ const map = new Image();
 map.src="img/mapa.png";
 const miniongraph = new Image();
 miniongraph.src="img/minion.png";
+let anim;
 map.addEventListener("load", e => {
-	const anim = new AnimationFrame(60, mainLoop);
+	anim = new AnimationFrame(60, mainLoop);
 	anim.start();
 })
 
@@ -153,8 +154,8 @@ class Minion{
 		const move_x = (player.posX - this.posX);
 		const move_y = (player.posY - this.posY);
 		const dl = Math.sqrt((move_x)*(move_x)+(move_y)*(move_y));
-		this.posX += move_x/dl;
-		this.posY += move_y/dl;
+		this.posX += move_x/dl * 3;
+		this.posY += move_y/dl * 3;
 	}
 }
 
@@ -219,6 +220,16 @@ function mainLoop(){
 	player.printPlayer();
 	for(let i = 0; i < minionsArray.length; i++) {
 		minionsArray[i].printMinion();
+		const mmidX = minionsArray[i].posX + mw/2;
+		const mmidY = minionsArray[i].posY + mh/2;
+		const pmidX = player.posX + pw/2;
+		const pmidY = player.posY + ph/2;
+		if(Math.sqrt((pmidX - mmidX)*(pmidX - mmidX)+(pmidY - mmidY)*(pmidY - mmidY)) < 120){
+			ctx.fillStyle = "white";
+			ctx.font = "italic bold 100px Arial";
+			ctx.fillText("PRZEGRANA", 300, 230);
+			anim.stop();
+		}
 	}
 	for(let i = 0; i < bulletsArray.length; i++) {
 		bulletsArray[i].printBullet();
