@@ -43,6 +43,13 @@ let d = false;
 let s = false;
 let w = false;
 
+let minionsArray = [];
+
+function minionSpawn(){
+	const min = new Minion();
+	minionsArray.push(min);
+}
+
 const playergraph = new Image();
 playergraph.src="img/gracz.png";
 const map = new Image();
@@ -61,14 +68,12 @@ class Minion{
 	printMinion(){
 		this.move();
 		ctx.drawImage(miniongraph,this.posX,this.posY,mw,mh);
-		console.log(this.posX);
-		console.log(this.posY);
 	}
 	spawn(){
 	const krawedz = randomInt(1,4);
 	if (krawedz == 1)
 	{
-		this.posX = 0;
+		this.posX = 0 - mw;
 		this.posY = randomInt(0, ch);
 		console.log("dziala1");
 	}
@@ -80,7 +85,7 @@ class Minion{
 	}
 	else if (krawedz == 3)
 	{
-		this.posY = 0;
+		this.posY = 0 - mh;
 		this.posX = randomInt(0, cw);
 		console.log("dziala3");
 	}
@@ -109,10 +114,11 @@ function printmap(){
 	ctx.drawImage(map,0,0);
 }
 
-const player = {
+const player = { 
 	posX: cw/2-pw/2,
 	posY: ch/2-ph/2,
 	printPlayer: function () {
+		this.playerBorder();
 		this.playerMove();
 		ctx.drawImage(playergraph,this.posX,this.posY,pw,ph);
 	},
@@ -129,7 +135,22 @@ const player = {
 		if (d==true){
 			player.posX +=4;
 		}
+	},
+	//Ograniczenie poruszania się gracza
+	playerBorder: function(){
+	if (player.posX <= 0){
+		player.posX = 0;
 	}
+	if (player.posX + pw >= cw){
+		player.posX  = cw - pw;
+	}
+	if (player.posY <= 0){
+		player.posY = 0;
+	}
+	if(player.posY + ph>= ch){
+		player.posY = ch - ph;
+	}
+}
 }
 
 function pressKey(e){
@@ -161,30 +182,13 @@ function releaseKey(e){
     }
 }
 
-//Ograniczenie poruszania się gracza
-function playerBorder(){
-	if (player.posX <= 0){
-		player.posX = 0;
-	}
-	if (player.posX + pw >= cw){
-		player.posX  = cw - pw;
-	}
-	if (player.posY <= 0){
-		player.posY = 0;
-	}
-	if(player.posY + ph>= ch){
-		player.posY = ch - ph;
-	}
-	console.log(player.posY);
-}
-
 function mainLoop(){
 	printmap();
 	player.printPlayer();
-	min.printMinion();
-	playerBorder();
+	for(let i = 0; i < minionsArray.length; i++) {minionsArray[i].printMinion();}
 }
-const min = new Minion();
+
+setInterval(minionSpawn, 2000);
 
 document.addEventListener("keydown", pressKey);
 document.addEventListener("keyup", releaseKey);
