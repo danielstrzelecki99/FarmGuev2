@@ -130,25 +130,21 @@ class Minion{
 	{
 		this.posX = 0 - mw;
 		this.posY = randomInt(0, ch);
-		console.log("dziala1");
 	}
 	else if (krawedz == 2)
 	{
 		this.posX = cw;
 		this.posY = randomInt(0, ch);
-		console.log("dziala2");
 	}
 	else if (krawedz == 3)
 	{
 		this.posY = 0 - mh;
 		this.posX = randomInt(0, cw);
-		console.log("dziala3");
 	}
 	else if (krawedz == 4)
 	{
 		this.posY = 807;
 		this.posX = randomInt(0, cw);
-		console.log("dziala4");
 	}
 	}
 	move(){
@@ -176,6 +172,11 @@ class Bullet{
 		const dl = Math.sqrt((this.move_x)*(this.move_x)+(this.move_y)*(this.move_y));
 		this.posX += this.move_x/dl * 10;
 		this.posY += this.move_y/dl * 10;
+	}
+	delete(){
+		if(this.posX < 0 || this.posX + 6 > cw || this.posY < 0 || this.posY + 6 > ch){
+			return true;
+		}
 	}
 }
 
@@ -213,8 +214,16 @@ function releaseKey(e){
 function mainLoop(){
 	printmap();
 	player.printPlayer();
-	for(let i = 0; i < minionsArray.length; i++) {minionsArray[i].printMinion();}
-	for(let i = 0; i < bulletsArray.length; i++) {bulletsArray[i].printBullet();}
+	for(let i = 0; i < minionsArray.length; i++) {
+		minionsArray[i].printMinion();
+	}
+	for(let i = 0; i < bulletsArray.length; i++) {
+		bulletsArray[i].printBullet();
+		//delete bullet when he crossed the border of map
+		if(bulletsArray[i].delete()){
+			 bulletsArray.splice(i, 1);
+		}
+	}
 }
 
 document.addEventListener("keydown", pressKey);
