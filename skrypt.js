@@ -3,10 +3,12 @@ const ctx = can.getContext("2d");
 const cw = can.width = 1200;
 const ch = can.height = 800;
 
-const mw = 78;
-const mh = 73;
-const pw = 165;
-const ph = 175;
+const mw = 78; //minion width
+const mh = 73; //minion height
+const pw = 165; //player width
+const ph = 175; //player height
+const bw = 6; //bullet width
+const bh = 6; //bullet height
 
 let a = false;
 let d = false;
@@ -166,7 +168,7 @@ class Bullet{
 	}
 	printBullet(){
 		this.move();
-		ctx.fillRect(this.posX,this.posY,6,6);
+		ctx.fillRect(this.posX,this.posY,bw,bh);
 	}
 	move(){
 		const dl = Math.sqrt((this.move_x)*(this.move_x)+(this.move_y)*(this.move_y));
@@ -174,7 +176,7 @@ class Bullet{
 		this.posY += this.move_y/dl * 10;
 	}
 	delete(){
-		if(this.posX < 0 || this.posX + 6 > cw || this.posY < 0 || this.posY + 6 > ch){
+		if(this.posX < 0 || this.posX + bw > cw || this.posY < 0 || this.posY + bh > ch){
 			return true;
 		}
 	}
@@ -211,6 +213,7 @@ function releaseKey(e){
         d = false;
     }
 }
+
 function mainLoop(){
 	printmap();
 	player.printPlayer();
@@ -222,6 +225,19 @@ function mainLoop(){
 		//delete bullet when he crossed the border of map
 		if(bulletsArray[i].delete()){
 			 bulletsArray.splice(i, 1);
+		}
+	}
+	for(let i = 0; i < minionsArray.length; i++){
+		for(let j = 0; j < bulletsArray.length; j++){
+			const bmidX = bulletsArray[j].posX + bw/2;
+			const bmidY = bulletsArray[j].posY + bh/2;
+			const mmidX = minionsArray[i].posX + mw/2;
+			const mmidY = minionsArray[i].posY + mh/2;
+			//colission bullet with minion
+			if(Math.sqrt((bmidX - mmidX)*(bmidX - mmidX)+(bmidY - mmidY)*(bmidY - mmidY)) < 50){
+				bulletsArray.splice(j, 1);
+				minionsArray.splice(i, 1);
+			}
 		}
 	}
 }
