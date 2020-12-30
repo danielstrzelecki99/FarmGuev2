@@ -3,6 +3,9 @@ const ctx = can.getContext("2d");
 const cw = can.width = 1200;
 const ch = can.height = 800;
 
+const pw = 165;
+const ph = 175;
+
 class AnimationFrame {
     constructor( fps = 60, animate ) {
         this.requestID = 0;
@@ -52,10 +55,10 @@ function printmap(){
 }
 
 const player = {
-	posX: cw/2,
-	posY: ch/2,
+	posX: cw/2-pw/2,
+	posY: ch/2-ph/2,
 	printPlayer: function () {
-		ctx.drawImage(playergraph,this.posX,this.posY,165,175);
+		ctx.drawImage(playergraph,this.posX,this.posY,pw,ph);
 	}
 }
 
@@ -102,10 +105,28 @@ function playerMove(){
 	}
 }
 
+//Ograniczenie poruszania się gracza
+function playerBorder(){
+	if (player.posX <= 0){
+		player.posX = 0;
+	}
+	if (player.posX + pw >= cw){
+		player.posX  = cw - pw;
+	}
+	if (player.posY <= 0){
+		player.posY = 0;
+	}
+	if(player.posY + ph>= ch){
+		player.posY = ch - ph;
+	}
+	console.log(player.posY);
+}
+
 function mainLoop(){
 	printmap();
 	player.printPlayer();
 	playerMove();
+	playerBorder();
 }
 
 document.addEventListener("keydown", pressKey);
