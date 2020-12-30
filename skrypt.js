@@ -56,6 +56,17 @@ function minionSpawn(){
 }
 setInterval(minionSpawn, 2000);
 
+let bulletsArray = [];
+
+function shot(){
+	const sho = new Bullet();
+	if (q == true){
+		bulletsArray.push(sho);
+		for(let i = 0; i < bulletsArray.length; i++) {bulletsArray[i].printBullet();}
+	}
+}
+	
+
 const playergraph = new Image();
 playergraph.src="img/gracz.png";
 const map = new Image();
@@ -149,6 +160,20 @@ class Minion{
 	}
 }
 
+class Bullet{
+	constructor(){
+		this.bulletSpawn();
+	}
+	printBullet(){
+		ctx.fillStyle = "white";
+		ctx.fillRect(this.posX,this.posY,3,3);
+	}
+	bulletSpawn(){
+			this.posX = player.posX;
+			this.posY = player.posY;
+		}
+}
+
 function printmap(){
 	ctx.drawImage(map,0,0);
 }
@@ -165,6 +190,9 @@ function pressKey(e){
 	if (e.keyCode == 68) {
         d = true;
     }
+	if (e.keyCode == 81){
+		q = true;
+	}
 }
 function releaseKey(e){
 	if (e.keyCode == 87) {
@@ -179,12 +207,16 @@ function releaseKey(e){
 	if (e.keyCode == 68) {
         d = false;
     }
+	if (e.keyCode == 81){
+		q = false;
+	}
 }
 
 function mainLoop(){
 	printmap();
 	player.printPlayer();
 	for(let i = 0; i < minionsArray.length; i++) {minionsArray[i].printMinion();}
+	shot();
 }
 
 document.addEventListener("keydown", pressKey);
