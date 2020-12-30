@@ -5,6 +5,8 @@ const ch = can.height = 800;
 
 const mw = 78;
 const mh = 73;
+const pw = 165;
+const ph = 175;
 
 class AnimationFrame {
     constructor( fps = 60, animate ) {
@@ -108,11 +110,11 @@ function printmap(){
 }
 
 const player = {
-	posX: cw/2,
-	posY: ch/2,
+	posX: cw/2-pw/2,
+	posY: ch/2-ph/2,
 	printPlayer: function () {
 		this.playerMove();
-		ctx.drawImage(playergraph,this.posX,this.posY,165,175);
+		ctx.drawImage(playergraph,this.posX,this.posY,pw,ph);
 	},
 	playerMove: function() {
 		if (w == true) {
@@ -159,10 +161,28 @@ function releaseKey(e){
     }
 }
 
+//Ograniczenie poruszania się gracza
+function playerBorder(){
+	if (player.posX <= 0){
+		player.posX = 0;
+	}
+	if (player.posX + pw >= cw){
+		player.posX  = cw - pw;
+	}
+	if (player.posY <= 0){
+		player.posY = 0;
+	}
+	if(player.posY + ph>= ch){
+		player.posY = ch - ph;
+	}
+	console.log(player.posY);
+}
+
 function mainLoop(){
 	printmap();
 	player.printPlayer();
 	min.printMinion();
+	playerBorder();
 }
 const min = new Minion();
 
