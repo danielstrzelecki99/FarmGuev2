@@ -3,39 +3,63 @@ const ctx = can.getContext("2d");
 const cw = can.width = 1200;
 const ch = can.height = 800;
 
+class AnimationFrame {
+    constructor( fps = 60, animate ) {
+        this.requestID = 0;
+        this.fps = fps;
+        this.animate = animate;
+    }
+
+    start() {
+        let then = performance.now();
+        const interval = 1000 / this.fps;
+        const tolerance = 0.1;
+
+        const animateLoop = now => {
+            this.requestID = requestAnimationFrame( animateLoop );
+            const delta = now - then;
+
+            if ( delta >= interval - tolerance ) {
+                then = now - ( delta % interval );
+                this.animate( delta );
+            }
+        };
+        this.requestID = requestAnimationFrame( animateLoop );
+    }
+
+    stop() {
+        cancelAnimationFrame( this.requestID );
+    }
+
+}
+
 let a = false;
 let d = false;
 let s = false;
 let w = false;
 
+const playergraph = new Image();
+playergraph.src="img/gracz.png";
+const map = new Image();
+map.src="img/mapa.png";
+map.addEventListener("load", e=>{
+	const anim = new AnimationFrame(60, mainLoop);
+	anim.start();
+})
 
-/*function printmap(){
-	let minion = new Image();
-	minion.src="img/minion.png";
-	minion.onload = function(){
-	ctx.drawImage(this,80,70,70,70);
-	}
-}*/
+
 
 function printmap(){
-	const map = new Image();
-	map.src="img/mapa.png";
-	map.onload = function(){
-	ctx.drawImage(this,0,0);
-	}
+	ctx.drawImage(map,0,0);
 }
 
 const player = {
 	posX: cw/2,
 	posY: ch/2,
 	printPlayer: function () {
-		const playergraph = new Image();
-		playergraph.src="img/gracz.png";
 		const a = this.posX;
 		const b = this.posY;
-		playergraph.onload = function(){
-		ctx.drawImage(this,a,b,165,175);
-		}
+		ctx.drawImage(playergraph,a,b,165,175);
 		console.log(a);
 		console.log(b);
 	}
@@ -87,13 +111,13 @@ function playerMove(){
 }
 
 
-function gra(){
+function mainLoop(){
 	printmap();
 	player.printPlayer();
 	playerMove();
 }
 
-setInterval(gra, 1000/60);
+//setInterval(gra, 1000/60);
 
 document.addEventListener("keydown", obslugaklawiszy);
 document.addEventListener("keyup", obslugaklawiszystop);
