@@ -8,6 +8,11 @@ const mh = 73;
 const pw = 165;
 const ph = 175;
 
+let a = false;
+let d = false;
+let s = false;
+let w = false;
+
 class AnimationFrame {
     constructor( fps = 60, animate ) {
         this.requestID = 0;
@@ -37,11 +42,11 @@ class AnimationFrame {
     }
 
 }
-
-let a = false;
-let d = false;
-let s = false;
-let w = false;
+function randomInt(min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
 let minionsArray = [];
 
@@ -49,6 +54,7 @@ function minionSpawn(){
 	const min = new Minion();
 	minionsArray.push(min);
 }
+setInterval(minionSpawn, 2000);
 
 const playergraph = new Image();
 playergraph.src="img/gracz.png";
@@ -61,6 +67,44 @@ map.addEventListener("load", e => {
 	anim.start();
 })
 
+const player = { 
+	posX: cw/2-pw/2,
+	posY: ch/2-ph/2,
+	printPlayer: function () {
+		this.playerBorder();
+		this.playerMove();
+		ctx.drawImage(playergraph,this.posX,this.posY,pw,ph);
+	},
+	playerMove: function() {
+		if (w == true) {
+			player.posY-=4;
+		}
+		if (s == true) {
+			player.posY+=4;
+		}
+		if (a == true){
+			player.posX -=4;
+		}
+		if (d==true){
+			player.posX +=4;
+		}
+	},
+	//Ograniczenie poruszania się gracza
+	playerBorder: function(){
+	if (player.posX <= 0){
+		player.posX = 0;
+	}
+	if (player.posX + pw >= cw){
+		player.posX  = cw - pw;
+	}
+	if (player.posY <= 0){
+		player.posY = 0;
+	}
+	if(player.posY + ph>= ch){
+		player.posY = ch - ph;
+	}
+}
+}
 class Minion{
 	constructor(){
 		this.spawn();
@@ -104,55 +148,10 @@ class Minion{
 		this.posY += move_y/dl;
 	}
 }
-function randomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
 
 function printmap(){
 	ctx.drawImage(map,0,0);
 }
-
-const player = { 
-	posX: cw/2-pw/2,
-	posY: ch/2-ph/2,
-	printPlayer: function () {
-		this.playerBorder();
-		this.playerMove();
-		ctx.drawImage(playergraph,this.posX,this.posY,pw,ph);
-	},
-	playerMove: function() {
-		if (w == true) {
-			player.posY-=4;
-		}
-		if (s == true) {
-			player.posY+=4;
-		}
-		if (a == true){
-			player.posX -=4;
-		}
-		if (d==true){
-			player.posX +=4;
-		}
-	},
-	//Ograniczenie poruszania się gracza
-	playerBorder: function(){
-	if (player.posX <= 0){
-		player.posX = 0;
-	}
-	if (player.posX + pw >= cw){
-		player.posX  = cw - pw;
-	}
-	if (player.posY <= 0){
-		player.posY = 0;
-	}
-	if(player.posY + ph>= ch){
-		player.posY = ch - ph;
-	}
-}
-}
-
 function pressKey(e){
 	if (e.keyCode == 87) {
 		w = true;
@@ -187,8 +186,6 @@ function mainLoop(){
 	player.printPlayer();
 	for(let i = 0; i < minionsArray.length; i++) {minionsArray[i].printMinion();}
 }
-
-setInterval(minionSpawn, 2000);
 
 document.addEventListener("keydown", pressKey);
 document.addEventListener("keyup", releaseKey);
