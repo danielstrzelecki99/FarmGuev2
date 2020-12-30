@@ -58,12 +58,11 @@ setInterval(minionSpawn, 2000);
 
 let bulletsArray = [];
 
-function shot(){
-	const sho = new Bullet();
-	if (q == true){
-		bulletsArray.push(sho);
-		for(let i = 0; i < bulletsArray.length; i++) {bulletsArray[i].printBullet();}
-	}
+function shot(e){
+	const mouseX = e.clientX - can.offsetLeft;
+	const mouseY = e.clientY - can.offsetTop; 
+	const sho = new Bullet(mouseX, mouseY);
+	bulletsArray.push(sho);
 }
 	
 
@@ -77,6 +76,7 @@ map.addEventListener("load", e => {
 	const anim = new AnimationFrame(60, mainLoop);
 	anim.start();
 })
+
 
 const player = { 
 	posX: cw/2-pw/2,
@@ -161,17 +161,22 @@ class Minion{
 }
 
 class Bullet{
-	constructor(){
-		this.bulletSpawn();
+	constructor(mousex, mousey){
+		this.posX = player.posX + 60;
+		this.posY = player.posY + 20;
+		ctx.fillStyle = "black";
+		this.move_x = mousex - this.posX;
+		this.move_y = mousey - this.posY;
 	}
 	printBullet(){
-		ctx.fillStyle = "white";
-		ctx.fillRect(this.posX,this.posY,3,3);
+		this.move();
+		ctx.fillRect(this.posX,this.posY,6,6);
 	}
-	bulletSpawn(){
-			this.posX = player.posX;
-			this.posY = player.posY;
-		}
+	move(){
+		const dl = Math.sqrt((this.move_x)*(this.move_x)+(this.move_y)*(this.move_y));
+		this.posX += this.move_x/dl * 10;
+		this.posY += this.move_y/dl * 10;
+	}
 }
 
 function printmap(){
@@ -190,9 +195,6 @@ function pressKey(e){
 	if (e.keyCode == 68) {
         d = true;
     }
-	if (e.keyCode == 81){
-		q = true;
-	}
 }
 function releaseKey(e){
 	if (e.keyCode == 87) {
@@ -207,17 +209,14 @@ function releaseKey(e){
 	if (e.keyCode == 68) {
         d = false;
     }
-	if (e.keyCode == 81){
-		q = false;
-	}
 }
-
 function mainLoop(){
 	printmap();
 	player.printPlayer();
 	for(let i = 0; i < minionsArray.length; i++) {minionsArray[i].printMinion();}
-	shot();
+	for(let i = 0; i < bulletsArray.length; i++) {bulletsArray[i].printBullet();}
 }
 
 document.addEventListener("keydown", pressKey);
 document.addEventListener("keyup", releaseKey);
+document.addEventListener("click", shot);
