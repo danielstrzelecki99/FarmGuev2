@@ -47,8 +47,6 @@ map.addEventListener("load", e=>{
 	anim.start();
 })
 
-
-
 function printmap(){
 	ctx.drawImage(map,0,0);
 }
@@ -57,15 +55,11 @@ const player = {
 	posX: cw/2,
 	posY: ch/2,
 	printPlayer: function () {
-		const a = this.posX;
-		const b = this.posY;
-		ctx.drawImage(playergraph,a,b,165,175);
-		console.log(a);
-		console.log(b);
+		ctx.drawImage(playergraph,this.posX,this.posY,165,175);
 	}
 }
 
-function obslugaklawiszy(e){
+function pressKey(e){
 	if (e.keyCode == 87) {
 		w = true;
 	}
@@ -79,8 +73,7 @@ function obslugaklawiszy(e){
         d = true;
     }
 }
-
-function obslugaklawiszystop(e){
+function releaseKey(e){
 	if (e.keyCode == 87) {
 		w = false;
 	}
@@ -94,7 +87,6 @@ function obslugaklawiszystop(e){
         d = false;
     }
 }
-
 function playerMove(){
 	if (w == true) {
 		player.posY-=4;
@@ -110,14 +102,11 @@ function playerMove(){
 	}
 }
 
-
 function mainLoop(){
 	printmap();
 	player.printPlayer();
 	playerMove();
 }
 
-//setInterval(gra, 1000/60);
-
-document.addEventListener("keydown", obslugaklawiszy);
-document.addEventListener("keyup", obslugaklawiszystop);
+document.addEventListener("keydown", pressKey);
+document.addEventListener("keyup", releaseKey);
